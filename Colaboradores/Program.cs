@@ -15,10 +15,10 @@ namespace Gerenciador
         }
         public class Colaborador
         {
+            public int Id { get; set; } = 0;
             public string Nome { get; set; }
             public string Setor { get; set; }
             public double Pagamento { get; set; }
-            public int Id { get; set; } = 0;
 
             public Colaborador(int id, string nome, string setor, double pagamento)
             {
@@ -34,16 +34,16 @@ namespace Gerenciador
 
             public void Cadastrar(SqlConnection connection)
             {
-                Console.WriteLine("ADICIONAR: Digite o nome do colaborador: ");
+                Console.WriteLine("------------- Menu de cadastro -------------");
+                Console.Write("Digite o nome do colaborador: ");
                 var nome = Console.ReadLine();
 
-                Console.WriteLine("ADICIONAR: Digite o setor do colaborador: ");
+                Console.Write("Digite o setor do colaborador: ");
                 var setor = Console.ReadLine();
 
-                Console.WriteLine("ADICIONAR: Digite o pagamento do colaborador: ");
-                double pagamento = double.Parse(Console.ReadLine());
+                Console.Write("Digite o pagamento do colaborador: ");
+                double? pagamento = double.Parse(Console.ReadLine());
 
-                Console.WriteLine($"{nome}, {setor}, {pagamento}");
                 if(nome != null || setor != null || pagamento != null)
                 {
                     var insertSql = "INSERT INTO [lista_colaboradores] VALUES (@Nome, @Setor, @pagamento)";
@@ -62,7 +62,8 @@ namespace Gerenciador
             }
             public void Consultar(SqlConnection connection)
             {
-                Console.WriteLine("1 - Consultar todos\n2 - Consultar por id\n3 - Consultar por setor\n4 - Voltar ao menu principal\n>> ");
+                Console.WriteLine("------------- Menu de Consulta -------------");
+                Console.Write("1 - Consultar todos\n2 - Consultar por id\n3 - Consultar por setor\n4 - Voltar ao menu principal\n>> ");
                 var opcao = Console.ReadLine();
 
                 if (opcao == "1")
@@ -70,38 +71,38 @@ namespace Gerenciador
                     var colaboradores = connection.Query<Colaborador>("SELECT * FROM [lista_colaboradores]");
                     foreach (var item in colaboradores)
                     {
-                        Console.WriteLine($"ID: {item.Id}");
+                        Console.WriteLine($"\nID: {item.Id}");
                         Console.WriteLine($"Nome: {item.Nome}");
                         Console.WriteLine($"Setor: {item.Setor}");
-                        Console.WriteLine($"Pagamento: {item.Pagamento}\n");
+                        Console.WriteLine($"Pagamento: {item.Pagamento}");
                     }
                 }
                 if( opcao == "2")
                 {
-                    Console.WriteLine("BUSCA: Digite o id do colaborador: ");
+                    Console.Write("Digite o id do colaborador: ");
                     var id = int.Parse(Console.ReadLine());
 
                     var colaboradores = connection.Query<Colaborador>("SELECT * FROM [lista_colaboradores] WHERE [Id]=@id", new {id});
                     foreach (var item in colaboradores)
                     {
-                        Console.WriteLine($"ID: {item.Id}");
+                        Console.WriteLine($"\nID: {item.Id}");
                         Console.WriteLine($"Nome: {item.Nome}");
                         Console.WriteLine($"Setor: {item.Setor}");
-                        Console.WriteLine($"Pagamento: {item.Pagamento}\n");
+                        Console.WriteLine($"Pagamento: {item.Pagamento}");
                     }
                 }
                 if( opcao == "3")
                 {
-                    Console.WriteLine("BUSCA: Digite o setor do colaborador: ");
+                    Console.Write("Digite o setor do colaborador: ");
                     var setor = Console.ReadLine();
 
                     var colaboradores = connection.Query<Colaborador>("SELECT * FROM [lista_colaboradores] WHERE [Setor]=@setor", new {setor});
                     foreach (var item in colaboradores)
                     {
-                        Console.WriteLine($"ID: {item.Id}");
+                        Console.WriteLine($"\nID: {item.Id}");
                         Console.WriteLine($"Nome: {item.Nome}");
                         Console.WriteLine($"Setor: {item.Setor}");
-                        Console.WriteLine($"Pagamento: {item.Pagamento}\n");
+                        Console.WriteLine($"Pagamento: {item.Pagamento}");
                     }
                 }
                 if( opcao == "4")
@@ -111,7 +112,8 @@ namespace Gerenciador
             }
             public void Remover(SqlConnection connection)
             {
-                Console.WriteLine("REMOÇÃO: Digite o id do colaborador: ");
+                Console.WriteLine("------------- Menu de Remoção -------------");
+                Console.Write("Digite o id do colaborador: ");
                 var id = int.Parse(Console.ReadLine());
 
                 var rows = connection.Execute("DELETE FROM [lista_colaboradores] WHERE [Id]=@id", new { id });
@@ -119,7 +121,8 @@ namespace Gerenciador
             }
             public void Atualizar(SqlConnection connection)
             {
-                Console.WriteLine("ATUALIZAR: Digite o id do colaborador: ");
+                Console.WriteLine("------------- Menu de Atualização -------------");
+                Console.Write("Digite o id do colaborador: ");
                 int? id = int.Parse(Console.ReadLine());
 
                 if( id == null)
@@ -128,13 +131,13 @@ namespace Gerenciador
                     Menu(connection);
                 } else
                 {
-                    Console.WriteLine("Digite o novo nome do colaborador: ");
+                    Console.Write("Digite o novo nome do colaborador: ");
                     var nome = Console.ReadLine();
 
-                    Console.WriteLine("Digite o novo setor do colaborador: ");
+                    Console.Write("Digite o novo setor do colaborador: ");
                     var setor = Console.ReadLine();
 
-                    Console.WriteLine("Digite o novo pagamento do colaborador: ");
+                    Console.Write("Digite o novo pagamento do colaborador: ");
                     double pagamento = double.Parse(Console.ReadLine());
 
                     var updateSql = "UPDATE lista_colaboradores SET [Nome] = @nome, [Setor] = @setor, [pagamento] = @pagamento WHERE Id=2";
@@ -151,6 +154,7 @@ namespace Gerenciador
             {
                 while (true)
                 {
+                    Console.WriteLine("------------- Menu Principal -------------");
                     Console.Write("1 - Cadastrar colaborador\n2 - Consultar colaborador\n3 - Remover colaborador\n4 - Atualizar colaborador\n5 - Sair\n>> ");
                     var opcao = Console.ReadLine();
 
